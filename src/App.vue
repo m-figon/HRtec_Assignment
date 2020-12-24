@@ -3,7 +3,19 @@
     <router-view/>
   </div>
 </template>
+<script>
+import store from "./store";
 
+export default {
+  name: "App",
+  store,
+  data() {
+    return {
+      mainId: "",
+    };
+  }
+};
+</script>
 <style>
 html{
     background: url('./imgs/Background.png');

@@ -12,7 +12,7 @@ const routes = [
     component: Playlist
   },
   {
-    path: '/player',
+    path: '/:player',
     name: 'Player',
     component: Player
 

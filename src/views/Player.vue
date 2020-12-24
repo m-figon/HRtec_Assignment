@@ -1,6 +1,6 @@
 <template>
   <div class="player-display">
-    <div class="player">
+    <div v-if="loaded" class="player">
       <div class="top-player">
         <div class="top-menu">
           <div class="left"></div>
@@ -10,7 +10,7 @@
             <img src="../imgs/refresh1.png" />
           </div>
           <div class="right">
-            <img src="../imgs/menu.png" />
+            <img src="../imgs/menu.png" v-on:click="goToPlaylist()" />
           </div>
         </div>
         <img src="../imgs/Icona_Pop.png" />
@@ -18,8 +18,8 @@
       <div class="bottom-menu">
         <div class="left"></div>
         <div class="middle">
-          <h1>Icona Pop</h1>
-          <h2>Still Dont Know</h2>
+          <h1>{{ song.author }}</h1>
+          <h2>{{ song.title }}</h2>
         </div>
         <div class="right"></div>
       </div>
@@ -38,13 +38,22 @@
         </div>
         <div class="middle">
           <div id="purple" class="player-img">
-            <img src="../imgs/previous.png" />
+            <img src="../imgs/previous.png" v-on:click="changeSong('-')" />
           </div>
           <div id="big-purple" class="player-img">
-            <img src="../imgs/pause.png" />
+            <img
+              v-if="played"
+              src="../imgs/pause.png"
+              v-on:click="playPause()"
+            />
+            <img
+              v-if="!played"
+              src="../imgs/next.png"
+              v-on:click="playPause()"
+            />
           </div>
           <div id="purple" class="player-img">
-            <img src="../imgs/next.png" />
+            <img src="../imgs/next.png" v-on:click="changeSong('+')" />
           </div>
         </div>
         <div class="right">
@@ -54,31 +63,65 @@
         </div>
       </div>
     </div>
-    <div class="player-shade"></div>
+    <img id="loading" v-if="!loaded" src="../imgs/loading.gif" />
+    <div v-if="loaded" class="player-shade"></div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import store from "../store";
 
 export default {
+  store,
   data() {
     return {
+      song: null,
+      played: false,
       songs: null,
+      loaded: false,
     };
   },
   created() {
-    console.log("created!");
     fetch("https://my-json-server.typicode.com/m-figon/demo/songs")
       .then((response) => response.json())
       .then((data) => {
         this.songs = data.slice();
         console.log(this.songs);
+        for (let singleSong of this.songs) {
+          if (singleSong.title === this.$route.params.player) {
+            this.song = singleSong;
+            console.log(this.song);
+            this.loaded = true;
+          }
+        }
       });
+  },
+  methods: {
+    changeSong(arg) {
+      if (arg === "-") {
+        this.song = this.songs[this.song.id - 1];
+        this.$router.push({ path: this.songs[this.song.id - 1].title });
+      } else {
+        this.song = this.songs[this.song.id + 1];
+        this.$router.push({ path: this.songs[this.song.id + 1].title });
+      }
+    },
+    playPause() {
+      this.played = !this.played;
+    },
+    goToPlaylist() {
+      this.$store.commit("changeSong", this.song.title);
+      this.$router.push({ path: "/" });
+    },
   },
 };
 </script>
 <style>
+#loading {
+  width: 2rem;
+  height: 2rem;
+}
 .player-display {
   width: 100vw;
   height: 100vh;
@@ -266,6 +309,17 @@ export default {
   filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
   background-color: #60558f;
   margin: 0 5px;
+}
+#purple:hover,
+#big-purple:hover {
+  background-color: #60558f96;
+  cursor: pointer;
+}
+.top-menu .right img:hover {
+  cursor: pointer;
+}
+.player-img:hover {
+  cursor: pointer;
 }
 </style>
 

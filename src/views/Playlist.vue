@@ -1,10 +1,12 @@
 <template>
   <div class="playlist-display">
-    <div class="playlist">
+    <img id="loading" v-if="!loaded" src="../imgs/loading.gif" />
+
+    <div v-if="loaded" class="playlist">
       <div class="top-part">
         <div class="left">
-          <div class="left-img">
-            <img src="../imgs/arrow1.png" />
+          <div class="left-img" v-bind:class="{ active: lastSong }">
+            <img src="../imgs/arrow1.png" v-on:click="goBack()" />
           </div>
         </div>
         <div class="middle">
@@ -19,7 +21,9 @@
               <h1>{{ song.duration }} | {{ song.author }}</h1>
             </div>
             <div class="bottom-song">
-              <h1>{{ song.title }}</h1>
+              <router-link v-bind:to="song.title">
+                <h1>{{ song.title }}</h1>
+              </router-link>
             </div>
           </div>
           <div class="right-song">
@@ -34,11 +38,15 @@
 
 <script>
 // @ is an alias to /src
+import store from "../store";
 
 export default {
+  store,
   data() {
     return {
       songs: null,
+      lastSong: null,
+      loaded: false,
     };
   },
   created() {
@@ -48,11 +56,25 @@ export default {
       .then((data) => {
         this.songs = data.slice();
         console.log(this.songs);
+        this.lastSong = this.$store.state.lastSong;
+        this.loaded = true;
       });
+  },
+  methods: {
+    goBack() {
+      let newPath = this.$store.state.lastSong;
+      if (newPath) {
+        this.$router.push({ path: "/" + newPath });
+      }
+    },
   },
 };
 </script>
 <style>
+#loading {
+  width: 2rem;
+  height: 2rem;
+}
 .middle h1 {
   font-size: 18px;
   color: #60558f;
@@ -88,7 +110,7 @@ export default {
   background-color: #f3f4f8;
   display: flex;
   flex-direction: column;
-  padding: 0 5%;
+  padding: 0 3%;
 }
 .top-part {
   height: 7rem;
@@ -101,6 +123,28 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  overflow-y: scroll;
+  height: 18.5rem;
+}
+::-webkit-scrollbar {
+  width: 7px;
+  border-radius: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(209, 209, 209);
+  border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
 }
 .song {
   display: flex;
@@ -142,6 +186,11 @@ export default {
 #favorite {
   width: 12px;
   height: 12px;
+  margin-right: 5px;
+}
+#share,
+#favorite {
+  cursor: pointer;
 }
 .top-song {
   height: 10px;
@@ -157,6 +206,12 @@ export default {
   color: #2f1a4b;
   font-weight: 400;
   font-family: "Rambla";
+}
+a {
+  text-decoration: none;
+}
+.active:hover {
+  cursor: pointer;
 }
 </style>
 
