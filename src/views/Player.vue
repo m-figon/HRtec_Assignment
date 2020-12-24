@@ -24,11 +24,11 @@
         <div class="right"></div>
       </div>
       <div class="volume-menu">
-        <div class="left"></div>
+        <div class="left" ref="progressLeft"></div>
         <div class="middle">
           <img src="../imgs/audio.png" />
         </div>
-        <div class="right"></div>
+        <div class="right" ref="progressRight"></div>
       </div>
       <div class="bottom-player">
         <div class="left">
@@ -37,7 +37,11 @@
           </div>
         </div>
         <div class="middle">
-          <div id="purple" class="player-img">
+          <div
+            id="purple"
+            class="player-img"
+            v-bind:class="{ inactive: song.id === 0 }"
+          >
             <img src="../imgs/previous.png" v-on:click="changeSong('-')" />
           </div>
           <div id="big-purple" class="player-img">
@@ -52,7 +56,11 @@
               v-on:click="playPause()"
             />
           </div>
-          <div id="purple" class="player-img">
+          <div
+            id="purple"
+            class="player-img"
+            v-bind:class="{ inactive: song.id + 1 === songs.length }"
+          >
             <img src="../imgs/next.png" v-on:click="changeSong('+')" />
           </div>
         </div>
@@ -80,31 +88,85 @@ export default {
       played: false,
       songs: null,
       loaded: false,
+      seconds: 0,
+      timeTic: 0,
+      refreshed: true,
+      timeInterval: null,
     };
   },
   created() {
-    fetch("https://my-json-server.typicode.com/m-figon/demo/songs")
-      .then((response) => response.json())
-      .then((data) => {
-        this.songs = data.slice();
-        console.log(this.songs);
-        for (let singleSong of this.songs) {
-          if (singleSong.title === this.$route.params.player) {
-            this.song = singleSong;
-            console.log(this.song);
-            this.loaded = true;
-          }
-        }
-      });
+    setInterval(() => {
+      if (this.refreshed) {
+        fetch("https://my-json-server.typicode.com/m-figon/demo/songs")
+          .then((response) => response.json())
+          .then((data) => {
+            this.songs = data.slice();
+            console.log(this.songs);
+            this.refreshed = false;
+            for (let singleSong of this.songs) {
+              if (singleSong.title === this.$route.params.player) {
+                this.seconds = 0;
+                this.song = singleSong;
+                console.log(this.song);
+                this.loaded = true;
+                this.seconds += parseInt(this.song.duration.substr(0, 1)) * 60;
+                this.seconds += parseInt(this.song.duration.substr(2, 2));
+                console.log("time of the song is equal to " + this.seconds);
+                this.timeInterval = setInterval(() => {
+                  if (this.played) {
+                    this.timeTic += 10;
+                    console.log(this.timeTic);
+                    console.log(this.$refs.progressLeft);
+                    console.log(this.$refs.progressRight);
+                    let percent1 = (this.timeTic / this.seconds) * 100;
+                    let percent2 = 100 - (this.timeTic / this.seconds) * 100;
+                    this.$refs.progressLeft.style.width = percent1 + "%";
+                    this.$refs.progressRight.style.width = percent2 + "%";
+                    console.log(this.seconds);
+                    if (this.timeTic >= this.seconds) {
+                      this.$refs.progressLeft.style.width = "0%";
+                      this.$refs.progressRight.style.width = "100%";
+                      console.log("time ended");
+                      this.played = true;
+                      this.timeTic = 0;
+                      if (this.song.id + 1 === this.songs.length) {
+                        this.$router.push({
+                          path: this.songs[0].title,
+                        });
+                        clearInterval(this.timeInterval);
+                        this.refreshed = true;
+                        this.loaded = false;
+                      } else {
+                        this.$router.push({
+                          path: this.songs[this.song.id + 1].title,
+                        });
+                        clearInterval(this.timeInterval);
+                        this.refreshed = true;
+                        this.loaded = false;
+                      }
+                    }
+                  }
+                }, 1000);
+              }
+            }
+          });
+      }
+    }, 1000);
   },
   methods: {
     changeSong(arg) {
-      if (arg === "-") {
-        this.song = this.songs[this.song.id - 1];
+      if (arg === "-" && this.song.id > 0) {
         this.$router.push({ path: this.songs[this.song.id - 1].title });
-      } else {
-        this.song = this.songs[this.song.id + 1];
+        clearInterval(this.timeInterval);
+        this.timeTic = 0;
+        this.refreshed = true;
+        this.loaded = false;
+      } else if (arg === "+" && this.song.id + 1 < this.songs.length) {
         this.$router.push({ path: this.songs[this.song.id + 1].title });
+        clearInterval(this.timeInterval);
+        this.timeTic = 0;
+        this.refreshed = true;
+        this.loaded = false;
       }
     },
     playPause() {
@@ -247,7 +309,7 @@ export default {
 .volume-menu .left {
   background: white;
   height: 100%;
-  width: 69%;
+  width: 0%;
 }
 .volume-menu .middle {
   width: 22px;
@@ -260,7 +322,7 @@ export default {
 .volume-menu .right {
   height: 100%;
   background-color: #ed5e74;
-  width: 29%;
+  width: 100%;
 }
 .volume-menu img {
   width: 12px;
@@ -310,8 +372,7 @@ export default {
   background-color: #60558f;
   margin: 0 5px;
 }
-#purple:hover,
-#big-purple:hover {
+.middle .player-img:hover {
   background-color: #60558f96;
   cursor: pointer;
 }
@@ -320,6 +381,9 @@ export default {
 }
 .player-img:hover {
   cursor: pointer;
+}
+.middle .inactive:hover {
+  cursor: auto;
 }
 </style>
 
