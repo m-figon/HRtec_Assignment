@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/playlist',
+    path: '/',
     name: 'Playlist',
     component: Playlist
   },
