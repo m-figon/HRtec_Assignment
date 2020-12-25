@@ -143,60 +143,7 @@ export default {
                   parseInt(this.song.duration.substr(0, 1)) * 60 +
                   parseInt(this.song.duration.substr(2, 2));
                 console.log("songs seconds: " + this.seconds);
-                this.timeInterval = setInterval(() => {
-                  if (!this.played) {
-                    return;
-                  }
-                  //if play button pressed
-                  this.timeTic += 1;
-                  this.$refs.progressLeft.style.width = (this.timeTic / this.seconds) * 100 + "%";
-                  this.$refs.progressRight.style.width = 100 - (this.timeTic / this.seconds) * 100 + "%";
-                  if (this.timeTic >= this.seconds) {
-                    // if time ended
-                    this.$refs.progressLeft.style.width = "0%";
-                    this.$refs.progressRight.style.width = "100%";
-                    this.played = true;
-                    this.timeTic = 0;
-                    if (
-                      this.song.id + 1 === this.songs.length &&
-                      this.mode === 1
-                    ) {
-                      // if playlist repeat mode is on
-                      this.$router.push({
-                        path: this.songs[0].title,
-                      });
-                      clearInterval(this.timeInterval);
-                      this.refreshed = true;
-                      this.loaded = false;
-                    } else if (
-                      // if playlist repeat mode is off
-                      this.song.id + 1 === this.songs.length &&
-                      this.mode === 0
-                    ) {
-                      clearInterval(this.timeInterval);
-                      this.played = false;
-                      this.timeTic = 0;
-                    } else if (this.mode === 3) {
-                      //if song repeat mode is on
-                      this.timeTic = 0;
-                    } else if (
-                      this.song.id + 1 !== this.songs.length &&
-                      this.mode !== 2
-                    ) {
-                      // if random song mode is off
-                      this.$router.push({
-                        path: this.songs[this.song.id + 1].title,
-                      });
-                      this.resetParams();
-                    } else if (this.mode === 2) {
-                      // if random song mode is on
-                      this.$router.push({
-                        path: this.songs[this.randomInt(0, this.songs.length - 1)].title,
-                      });
-                      this.resetParams();
-                    }
-                  }
-                }, 100);
+                this.timeInterval = setInterval(this.intervalCallback, 100);
               }
             }
           });
@@ -210,17 +157,64 @@ export default {
       this.refreshed = true;
       this.loaded = false;
     },
+    intervalCallback = () =>{
+      if (!this.played) {
+        return;
+      }
+      //if play button pressed
+      this.timeTic += 1;
+      this.$refs.progressLeft.style.width = (this.timeTic / this.seconds) * 100 + "%";
+      this.$refs.progressRight.style.width = 100 - (this.timeTic / this.seconds) * 100 + "%";
+      if (this.timeTic < this.seconds) {
+        return;
+      }
+      // if time ended
+      this.$refs.progressLeft.style.width = "0%";
+      this.$refs.progressRight.style.width = "100%";
+      this.played = true;
+      this.timeTic = 0;
+
+      const playlistReapeatModeOn = ()  => this.song.id + 1 === this.songs.length && this.mode === 1;
+      const playlistReapeatModeOff = ()  => this.song.id + 1 === this.songs.length && this.mode === 0;
+      const randomModeOff = () => this.song.id + 1 !== this.songs.length && this.mode !== 2;
+      const repeatModeOn = () => this.mode === 3;
+      const randomModeOn = () => this.mode === 2;
+
+      if (playlistReapeatModeOn()) {
+        this.$router.push({
+          path: this.songs[0].title,
+        });
+        clearInterval(this.timeInterval);
+        this.refreshed = true;
+        this.loaded = false;
+      } else if (playlistReapeatModeOff()) {
+        clearInterval(this.timeInterval);
+        this.played = false;
+        this.timeTic = 0;
+      } else if (repeatModeOn()) {
+        this.timeTic = 0;
+      } else if (randomModeOff()) {
+        this.$router.push({
+          path: this.songs[this.song.id + 1].title,
+        });
+        this.resetParams();
+      } else if (randomModeOn()) {
+        this.$router.push({
+          path: this.songs[this.randomInt(0, this.songs.length - 1)].title,
+        });
+        this.resetParams();
+      }
+    },
     changeSong(arg) {
-      let newPosition;
       if (arg === "-" && this.song.id > 0) {
         //previous song
-        newPosition = this.song.id - 1;
-      } else if (arg === "+" && this.song.id + 1 < this.songs.length) {
+      this.$router.push({ path: this.songs[this.song.id - 1].title });
+      this.resetParams();      
+      }else if (arg === "+" && this.song.id + 1 < this.songs.length) {
         //next song
-        newPosition = this.song.id + 1;
+        this.$router.push({ path: this.songs[this.song.id + 1].title });
+        this.resetParams();
       }
-      this.$router.push({ path: this.songs[newPosition].title });
-      this.resetParams();
     },
     randomInt(min, max) {
       return min + Math.floor((max - min) * Math.random());
@@ -238,12 +232,12 @@ export default {
       }
     },
     loveReaction(num) {
-      this.songs = this.songs.map((song) => {
+      for(const song of this.songs){
         if (song.id === num) {
           song.heart = !song.heart;
+          break;
         }
-        return song;
-      });
+      }
     },
     playPause() {
       this.played = !this.played;

@@ -87,12 +87,12 @@ export default {
       this.popup = value;
     },
     loveReaction(num) {
-      this.songs = this.songs.map((song) => {
+      for (const song of this.songs) {
         if (song.id === num) {
           song.heart = !song.heart;
+          break;
         }
-        return song;
-      });
+      }
     },
   },
 };
