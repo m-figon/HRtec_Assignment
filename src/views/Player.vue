@@ -44,7 +44,7 @@
       </div>
       <div class="bottom-player">
         <div class="left">
-          <div class="player-img">
+          <div class="player-img" v-on:click="popupChange(true)">
             <img src="../imgs/share.png" />
           </div>
         </div>
@@ -67,7 +67,7 @@
             />
             <img
               v-if="!played"
-              src="../imgs/next.png"
+              src="../imgs/play.png" id="play"
               v-on:click="playPause()"
             />
           </div>
@@ -83,7 +83,11 @@
           </div>
         </div>
         <div class="right">
-          <div class="player-img">
+          <div
+            class="player-img"
+            v-bind:class="{ loved: song.heart }"
+            v-on:click="loveReaction(song.id)"
+          >
             <img src="../imgs/favorite.png" />
           </div>
         </div>
@@ -91,15 +95,20 @@
     </div>
     <img id="loading" v-if="!loaded" src="../imgs/loading.gif" />
     <div v-if="loaded" class="player-shade"></div>
+    <share-popup v-bind:display="popup" v-on:displayChange="popupChange(false)"></share-popup>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import store from "../store";
+import Popup from "../components/Share.vue";
 
 export default {
   store,
+  components:{
+    'share-popup': Popup,
+  },
   data() {
     return {
       song: null,
@@ -111,6 +120,7 @@ export default {
       refreshed: true,
       timeInterval: null,
       mode: 0,
+      popup: false,
     };
   },
   created() {
@@ -222,11 +232,21 @@ export default {
     randomInt(min, max) {
       return min + Math.floor((max - min) * Math.random());
     },
+    popupChange(value) {
+      this.popup = value;
+    },
     changeMode(num) {
       if (this.mode === num) {
         this.mode = 0;
       } else {
         this.mode = num;
+      }
+    },
+    loveReaction(num) {
+      for (const song of this.songs) {
+        if (song.id === num) {
+          song.heart = !song.heart;
+        }
       }
     },
     playPause() {
@@ -305,6 +325,8 @@ export default {
   width: 16px;
   height: 16px;
   margin: 0 10px;
+  border-radius: 50%;
+  padding: 2px;
 }
 .top-menu .right img {
   width: 16px;
@@ -453,6 +475,7 @@ export default {
 }
 .player-img:hover {
   cursor: pointer;
+  background-color: #5d39fd13;
 }
 .middle .inactive {
   background-color: #cecece;
@@ -467,13 +490,18 @@ export default {
   -webkit-box-shadow: 0px 0px 6px 5px #60558f;
   box-shadow: 0px 0px 6px 5px #60558f;
 }
-.player-img:hover,
 .volume-menu .middle:hover {
   -webkit-box-shadow: 0px 0px 6px 2px #60558f;
   box-shadow: 0px 0px 6px 2px #60558f;
   cursor: pointer;
 }
-
+.loved {
+  -webkit-box-shadow: 0px 0px 6px 2px red;
+  box-shadow: 0px 0px 6px 2px red;
+}
+#play{
+  padding-left:3px;
+}
 </style>
 
 

@@ -1,6 +1,10 @@
 <template>
   <div class="playlist-display">
     <img id="loading" v-if="!loaded" src="../imgs/loading.gif" />
+    <share-popup
+      v-bind:display="popup"
+      v-on:displayChange="popupChange(false)"
+    ></share-popup>
 
     <div v-if="loaded" class="playlist">
       <div class="top-part">
@@ -27,8 +31,13 @@
             </div>
           </div>
           <div class="right-song">
-            <img id="share" src="../imgs/share.png" />
-            <img id="favorite" src="../imgs/favorite.png" />
+            <img id="share" src="../imgs/share.png" v-on:click="popupChange(true)"/>
+            <img
+              id="favorite"
+              src="../imgs/favorite.png"
+              v-bind:class="{ loved: song.heart }"
+              v-on:click="loveReaction(song.id)"
+            />
           </div>
         </div>
       </div>
@@ -39,14 +48,19 @@
 <script>
 // @ is an alias to /src
 import store from "../store";
+import Popup from "../components/Share.vue";
 
 export default {
   store,
+  components: {
+    "share-popup": Popup,
+  },
   data() {
     return {
       songs: null,
       lastSong: null,
       loaded: false,
+      popup: false,
     };
   },
   created() {
@@ -65,6 +79,16 @@ export default {
       let newPath = this.$store.state.lastSong;
       if (newPath) {
         this.$router.push({ path: "/" + newPath });
+      }
+    },
+    popupChange(value) {
+      this.popup = value;
+    },
+    loveReaction(num) {
+      for (const song of this.songs) {
+        if (song.id === num) {
+          song.heart = !song.heart;
+        }
       }
     },
   },
@@ -110,10 +134,10 @@ export default {
   background-color: #f3f4f8;
   display: flex;
   flex-direction: column;
-  padding: 0 3%;
+  padding: 0.5% 2%;
 }
 .top-part {
-  height: 7rem;
+  height: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,10 +145,11 @@ export default {
 .bottom-part {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   overflow-y: scroll;
-  height: 18.5rem;
+  height: 21rem;
+  padding: 0 1rem;
 }
 ::-webkit-scrollbar {
   width: 7px;
@@ -187,6 +212,8 @@ export default {
   width: 12px;
   height: 12px;
   margin-right: 5px;
+  border-radius: 50%;
+  padding: 2px;
 }
 #share,
 #favorite {
@@ -194,6 +221,11 @@ export default {
 }
 .top-song {
   height: 10px;
+  margin-bottom: 0.3rem;
+  margin-top: 0.5rem;
+}
+.bottom-song {
+  margin-bottom: 0.4rem;
 }
 .top-song h1 {
   font-size: 12px;
@@ -215,6 +247,10 @@ a {
 }
 .active:hover {
   cursor: pointer;
+}
+.loved {
+  -webkit-box-shadow: 0px 0px 6px 2px red;
+  box-shadow: 0px 0px 6px 2px red;
 }
 </style>
 
