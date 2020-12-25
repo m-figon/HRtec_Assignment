@@ -5,9 +5,21 @@
         <div class="top-menu">
           <div class="left"></div>
           <div class="middle">
-            <img src="../imgs/refresh4.png" />
-            <img src="../imgs/shuffle.png" />
-            <img src="../imgs/refresh1.png" />
+            <img
+              src="../imgs/refresh4.png"
+              v-on:click="changeMode(1)"
+              v-bind:class="{ chosen: mode === 1 }"
+            />
+            <img
+              src="../imgs/shuffle.png"
+              v-on:click="changeMode(2)"
+              v-bind:class="{ chosen: mode === 2 }"
+            />
+            <img
+              src="../imgs/refresh1.png"
+              v-on:click="changeMode(3)"
+              v-bind:class="{ chosen: mode === 3 }"
+            />
           </div>
           <div class="right">
             <img src="../imgs/menu.png" v-on:click="goToPlaylist()" />
@@ -38,13 +50,16 @@
         </div>
         <div class="middle">
           <div
-            id="purple"
-            class="player-img"
+            class="purple-player-img"
             v-bind:class="{ inactive: song.id === 0 }"
           >
-            <img src="../imgs/previous.png" v-on:click="changeSong('-')" />
+            <img
+              v-bind:class="{ inactive: song.id === 0 }"
+              src="../imgs/previous.png"
+              v-on:click="changeSong('-')"
+            />
           </div>
-          <div id="big-purple" class="player-img">
+          <div class="big-purple-player-img">
             <img
               v-if="played"
               src="../imgs/pause.png"
@@ -57,11 +72,14 @@
             />
           </div>
           <div
-            id="purple"
-            class="player-img"
+            class="purple-player-img"
             v-bind:class="{ inactive: song.id + 1 === songs.length }"
           >
-            <img src="../imgs/next.png" v-on:click="changeSong('+')" />
+            <img
+              v-bind:class="{ inactive: song.id + 1 === songs.length }"
+              src="../imgs/next.png"
+              v-on:click="changeSong('+')"
+            />
           </div>
         </div>
         <div class="right">
@@ -92,6 +110,7 @@ export default {
       timeTic: 0,
       refreshed: true,
       timeInterval: null,
+      mode: 0,
     };
   },
   created() {
@@ -129,16 +148,47 @@ export default {
                       console.log("time ended");
                       this.played = true;
                       this.timeTic = 0;
-                      if (this.song.id + 1 === this.songs.length) {
+                      if (
+                        this.song.id + 1 === this.songs.length &&
+                        this.mode === 1
+                      ) {
+                        console.log("go to beginning of playlist");
                         this.$router.push({
                           path: this.songs[0].title,
                         });
                         clearInterval(this.timeInterval);
                         this.refreshed = true;
                         this.loaded = false;
-                      } else {
+                      } else if (
+                        this.song.id + 1 === this.songs.length &&
+                        this.mode === 0
+                      ) {
+                        console.log("stop the playlist");
+                        clearInterval(this.timeInterval);
+                        this.played = false;
+                        this.timeTic = 0;
+                      } else if (this.mode === 3) {
+                        console.log("repeat the song");
+                        this.timeTic = 0;
+                      } else if (
+                        this.song.id + 1 !== this.songs.length &&
+                        this.mode !== 2
+                      ) {
+                        console.log("go to next song");
                         this.$router.push({
                           path: this.songs[this.song.id + 1].title,
+                        });
+                        clearInterval(this.timeInterval);
+                        this.refreshed = true;
+                        this.loaded = false;
+                      } else if (this.mode === 2) {
+                        console.log("go to random song");
+                        let randomNum = this.randomInt(
+                          0,
+                          this.songs.length - 1
+                        );
+                        this.$router.push({
+                          path: this.songs[randomNum].title,
                         });
                         clearInterval(this.timeInterval);
                         this.refreshed = true;
@@ -169,10 +219,21 @@ export default {
         this.loaded = false;
       }
     },
+    randomInt(min, max) {
+      return min + Math.floor((max - min) * Math.random());
+    },
+    changeMode(num) {
+      if (this.mode === num) {
+        this.mode = 0;
+      } else {
+        this.mode = num;
+      }
+    },
     playPause() {
       this.played = !this.played;
     },
     goToPlaylist() {
+      clearInterval(this.timeInterval);
       this.$store.commit("changeSong", this.song.title);
       this.$router.push({ path: "/" });
     },
@@ -346,6 +407,22 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.purple-player-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  background-color: #60558f;
+  margin: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.purple-player-img:hover,
+.big-purple-player-img:hover {
+  background-color: #7f71bb;
+  cursor: pointer;
+}
 .player-img {
   width: 36px;
   height: 36px;
@@ -356,21 +433,16 @@ export default {
   justify-content: center;
   align-items: center;
 }
-#purple {
-  width: 36px;
-  height: 36px;
-  border-radius: 18px;
-  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
-  background-color: #60558f;
-  margin: 0 5px;
-}
-#big-purple {
+.big-purple-player-img {
   width: 50px;
   height: 50px;
   border-radius: 25px;
   filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
   background-color: #60558f;
   margin: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .middle .player-img:hover {
   background-color: #60558f96;
@@ -382,9 +454,26 @@ export default {
 .player-img:hover {
   cursor: pointer;
 }
+.middle .inactive {
+  background-color: #cecece;
+}
 .middle .inactive:hover {
   cursor: auto;
 }
+.middle img:hover {
+  cursor: pointer;
+}
+.chosen {
+  -webkit-box-shadow: 0px 0px 6px 5px #60558f;
+  box-shadow: 0px 0px 6px 5px #60558f;
+}
+.player-img:hover,
+.volume-menu .middle:hover {
+  -webkit-box-shadow: 0px 0px 6px 2px #60558f;
+  box-shadow: 0px 0px 6px 2px #60558f;
+  cursor: pointer;
+}
+
 </style>
 
 

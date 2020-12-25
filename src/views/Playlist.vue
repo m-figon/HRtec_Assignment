@@ -15,7 +15,7 @@
         <div class="right"></div>
       </div>
       <div class="bottom-part">
-        <div class="song" v-for="song in songs" v-bind:key="song.title">
+        <div class="song" v-for="song in songs" v-bind:key="song.id">
           <div class="left-song">
             <div class="top-song">
               <h1>{{ song.duration }} | {{ song.author }}</h1>
@@ -90,7 +90,7 @@ export default {
   height: 36px;
   border-radius: 18px;
   filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
-  background-color: #ffffff;
+  background-color: #cecece;
 }
 .left-img img {
   width: 16px;
@@ -180,7 +180,7 @@ export default {
 #share {
   width: 14px;
   height: 12px;
-  margin: 0 5px;
+  margin: 0 10px;
   border-radius: 4px;
 }
 #favorite {
@@ -209,6 +209,9 @@ export default {
 }
 a {
   text-decoration: none;
+}
+.active {
+  background-color: #ffffff;
 }
 .active:hover {
   cursor: pointer;
