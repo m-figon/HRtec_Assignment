@@ -67,7 +67,8 @@
             />
             <img
               v-if="!played"
-              src="../imgs/play.png" id="play"
+              src="../imgs/play.png"
+              id="play"
               v-on:click="playPause()"
             />
           </div>
@@ -95,19 +96,21 @@
     </div>
     <img id="loading" v-if="!loaded" src="../imgs/loading.gif" />
     <div v-if="loaded" class="player-shade"></div>
-    <share-popup v-bind:display="popup" v-on:displayChange="popupChange(false)"></share-popup>
+    <share-popup
+      v-bind:display="popup"
+      v-on:displayChange="popupChange(false)"
+    ></share-popup>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import store from "../store";
 import Popup from "../components/Share.vue";
 
 export default {
   store,
-  components:{
-    'share-popup': Popup,
+  components: {
+    "share-popup": Popup,
   },
   data() {
     return {
@@ -130,83 +133,70 @@ export default {
           .then((response) => response.json())
           .then((data) => {
             this.songs = data.slice();
-            console.log(this.songs);
             this.refreshed = false;
-            for (let singleSong of this.songs) {
+            for (const singleSong of this.songs) {
               if (singleSong.title === this.$route.params.player) {
                 this.seconds = 0;
                 this.song = singleSong;
-                console.log(this.song);
                 this.loaded = true;
-                this.seconds += parseInt(this.song.duration.substr(0, 1)) * 60;
-                this.seconds += parseInt(this.song.duration.substr(2, 2));
-                console.log("time of the song is equal to " + this.seconds);
+                this.seconds +=
+                  parseInt(this.song.duration.substr(0, 1)) * 60 +
+                  parseInt(this.song.duration.substr(2, 2));
+                console.log("songs seconds: " + this.seconds);
                 this.timeInterval = setInterval(() => {
-                  if (this.played) {
-                    this.timeTic += 10;
-                    console.log(this.timeTic);
-                    console.log(this.$refs.progressLeft);
-                    console.log(this.$refs.progressRight);
-                    let percent1 = (this.timeTic / this.seconds) * 100;
-                    let percent2 = 100 - (this.timeTic / this.seconds) * 100;
-                    this.$refs.progressLeft.style.width = percent1 + "%";
-                    this.$refs.progressRight.style.width = percent2 + "%";
-                    console.log(this.seconds);
-                    if (this.timeTic >= this.seconds) {
-                      this.$refs.progressLeft.style.width = "0%";
-                      this.$refs.progressRight.style.width = "100%";
-                      console.log("time ended");
-                      this.played = true;
+                  if (!this.played) {
+                    return;
+                  }
+                  //if play button pressed
+                  this.timeTic += 1;
+                  this.$refs.progressLeft.style.width = (this.timeTic / this.seconds) * 100 + "%";
+                  this.$refs.progressRight.style.width = 100 - (this.timeTic / this.seconds) * 100 + "%";
+                  if (this.timeTic >= this.seconds) {
+                    // if time ended
+                    this.$refs.progressLeft.style.width = "0%";
+                    this.$refs.progressRight.style.width = "100%";
+                    this.played = true;
+                    this.timeTic = 0;
+                    if (
+                      this.song.id + 1 === this.songs.length &&
+                      this.mode === 1
+                    ) {
+                      // if playlist repeat mode is on
+                      this.$router.push({
+                        path: this.songs[0].title,
+                      });
+                      clearInterval(this.timeInterval);
+                      this.refreshed = true;
+                      this.loaded = false;
+                    } else if (
+                      // if playlist repeat mode is off
+                      this.song.id + 1 === this.songs.length &&
+                      this.mode === 0
+                    ) {
+                      clearInterval(this.timeInterval);
+                      this.played = false;
                       this.timeTic = 0;
-                      if (
-                        this.song.id + 1 === this.songs.length &&
-                        this.mode === 1
-                      ) {
-                        console.log("go to beginning of playlist");
-                        this.$router.push({
-                          path: this.songs[0].title,
-                        });
-                        clearInterval(this.timeInterval);
-                        this.refreshed = true;
-                        this.loaded = false;
-                      } else if (
-                        this.song.id + 1 === this.songs.length &&
-                        this.mode === 0
-                      ) {
-                        console.log("stop the playlist");
-                        clearInterval(this.timeInterval);
-                        this.played = false;
-                        this.timeTic = 0;
-                      } else if (this.mode === 3) {
-                        console.log("repeat the song");
-                        this.timeTic = 0;
-                      } else if (
-                        this.song.id + 1 !== this.songs.length &&
-                        this.mode !== 2
-                      ) {
-                        console.log("go to next song");
-                        this.$router.push({
-                          path: this.songs[this.song.id + 1].title,
-                        });
-                        clearInterval(this.timeInterval);
-                        this.refreshed = true;
-                        this.loaded = false;
-                      } else if (this.mode === 2) {
-                        console.log("go to random song");
-                        let randomNum = this.randomInt(
-                          0,
-                          this.songs.length - 1
-                        );
-                        this.$router.push({
-                          path: this.songs[randomNum].title,
-                        });
-                        clearInterval(this.timeInterval);
-                        this.refreshed = true;
-                        this.loaded = false;
-                      }
+                    } else if (this.mode === 3) {
+                      //if song repeat mode is on
+                      this.timeTic = 0;
+                    } else if (
+                      this.song.id + 1 !== this.songs.length &&
+                      this.mode !== 2
+                    ) {
+                      // if random song mode is off
+                      this.$router.push({
+                        path: this.songs[this.song.id + 1].title,
+                      });
+                      this.resetParams();
+                    } else if (this.mode === 2) {
+                      // if random song mode is on
+                      this.$router.push({
+                        path: this.songs[this.randomInt(0, this.songs.length - 1)].title,
+                      });
+                      this.resetParams();
                     }
                   }
-                }, 1000);
+                }, 100);
               }
             }
           });
@@ -214,20 +204,23 @@ export default {
     }, 1000);
   },
   methods: {
+    resetParams() {
+      clearInterval(this.timeInterval);
+      this.timeTic = 0;
+      this.refreshed = true;
+      this.loaded = false;
+    },
     changeSong(arg) {
+      let newPosition;
       if (arg === "-" && this.song.id > 0) {
-        this.$router.push({ path: this.songs[this.song.id - 1].title });
-        clearInterval(this.timeInterval);
-        this.timeTic = 0;
-        this.refreshed = true;
-        this.loaded = false;
+        //previous song
+        newPosition = this.song.id - 1;
       } else if (arg === "+" && this.song.id + 1 < this.songs.length) {
-        this.$router.push({ path: this.songs[this.song.id + 1].title });
-        clearInterval(this.timeInterval);
-        this.timeTic = 0;
-        this.refreshed = true;
-        this.loaded = false;
+        //next song
+        newPosition = this.song.id + 1;
       }
+      this.$router.push({ path: this.songs[newPosition].title });
+      this.resetParams();
     },
     randomInt(min, max) {
       return min + Math.floor((max - min) * Math.random());
@@ -237,17 +230,20 @@ export default {
     },
     changeMode(num) {
       if (this.mode === num) {
+        //uncheck mode
         this.mode = 0;
       } else {
+        //check mode
         this.mode = num;
       }
     },
     loveReaction(num) {
-      for (const song of this.songs) {
+      this.songs = this.songs.map((song) => {
         if (song.id === num) {
           song.heart = !song.heart;
         }
-      }
+        return song;
+      });
     },
     playPause() {
       this.played = !this.played;
@@ -499,8 +495,8 @@ export default {
   -webkit-box-shadow: 0px 0px 6px 2px red;
   box-shadow: 0px 0px 6px 2px red;
 }
-#play{
-  padding-left:3px;
+#play {
+  padding-left: 3px;
 }
 </style>
 

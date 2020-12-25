@@ -31,7 +31,11 @@
             </div>
           </div>
           <div class="right-song">
-            <img id="share" src="../imgs/share.png" v-on:click="popupChange(true)"/>
+            <img
+              id="share"
+              src="../imgs/share.png"
+              v-on:click="popupChange(true)"
+            />
             <img
               id="favorite"
               src="../imgs/favorite.png"
@@ -64,32 +68,31 @@ export default {
     };
   },
   created() {
-    console.log("created!");
     fetch("https://my-json-server.typicode.com/m-figon/demo/songs")
       .then((response) => response.json())
       .then((data) => {
         this.songs = data.slice();
-        console.log(this.songs);
         this.lastSong = this.$store.state.lastSong;
         this.loaded = true;
       });
   },
   methods: {
     goBack() {
-      let newPath = this.$store.state.lastSong;
+      const newPath = this.$store.state.lastSong;
       if (newPath) {
-        this.$router.push({ path: "/" + newPath });
+        this.$router.push({ path: "/" + newPath }); //change url to last song opened in player
       }
     },
     popupChange(value) {
       this.popup = value;
     },
     loveReaction(num) {
-      for (const song of this.songs) {
+      this.songs = this.songs.map((song) => {
         if (song.id === num) {
           song.heart = !song.heart;
         }
-      }
+        return song;
+      });
     },
   },
 };
