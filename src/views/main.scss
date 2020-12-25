@@ -1,0 +1,12 @@
+$main-color:  #60558f;
+$main-font: "Rambla";
+@mixin flex($display:flex,$justify-content:center,$align-items:center,$flex-direction:row){
+    display: $display;
+    justify-content: $justify-content;
+    align-items: $align-items;
+    flex-direction: $flex-direction;
+}
+@mixin widthHeight($width,$height){
+    width: $width;
+    height: $height;
+}

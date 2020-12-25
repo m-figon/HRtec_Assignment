@@ -1,0 +1,500 @@
+.player-display {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.player {
+  width: 22.5rem;
+  height: 30rem;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.top-player {
+  width: 100%;
+  height: 70%;
+}
+.top-player img {
+  width: 100%;
+  height: 100%;
+  margin-top: -20%;
+}
+
+.bottom-player {
+  position: relative;
+  background-color: #eeeff5;
+  width: 100%;
+  height: 30%;
+  z-index: 5;
+}
+
+.top-menu {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 20%;
+  background-color: rgba(0, 0, 0, 0.425);
+  display: flex;
+  padding: 0 3%;
+}
+.top-menu .left,
+.top-menu .middle,
+.top-menu .right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 31%;
+  height: 100%;
+}
+.top-menu .left {
+  justify-content: flex-start;
+}
+.top-menu .right {
+  justify-content: flex-end;
+}
+.top-menu .right img {
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0.625rem;
+}
+.top-menu .right img:hover {
+  cursor: pointer;
+}
+.top-menu .middle img {
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0.625rem;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.bottom-menu {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 15%;
+  background-color: rgba(0, 0, 0, 0.425);
+  display: flex;
+  padding: 0 3%;
+  margin-top: -21%;
+}
+.bottom-menu .left,
+.bottom-menu .middle,
+.bottom-menu .right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 33%;
+  height: 100%;
+  flex-direction: column;
+}
+.bottom-menu .left {
+  justify-content: flex-start;
+}
+.bottom-menu .right {
+  justify-content: flex-end;
+}
+.bottom-menu .middle h1 {
+  font-size: 1.125rem;
+  color: #ffffff;
+  font-weight: 700;
+  font-family: "Rambla";
+  text-align: center;
+  margin: 0;
+}
+.bottom-menu .middle h2 {
+  font-size: 0.875rem;
+  color: #ffffff;
+  font-weight: 400;
+  font-family: "Rambla";
+  text-align: center;
+  margin: 0;
+}
+
+.player-shade {
+  background-color: rgba(83, 65, 129, 0.384);
+  width: 22.5rem;
+  height: 30rem;
+  border-radius: 30px;
+  margin-left: -22.5rem;
+}
+
+.volume-menu {
+  width: 100%;
+  height: 0.4375rem;
+  position: relative;
+  z-index: 7;
+  display: flex;
+}
+.volume-menu .left {
+  background: white;
+  width: 0%;
+  height: 100%;
+}
+.volume-menu .middle {
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 11px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  background-color: #ffffff;
+  margin-top: -0.5rem;
+}
+.volume-menu .right {
+  width: 100%;
+  height: 100%;
+  background-color: #ed5e74;
+}
+.volume-menu img {
+  width: 0.75rem;
+  height: 0.5625rem;
+}
+
+.bottom-player {
+  display: flex;
+}
+.bottom-player .left,
+.bottom-player .right,
+.bottom-player .middle {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.bottom-player .middle {
+  width: 50%;
+}
+
+.purple-player-img {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 18px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  background-color: #60558f;
+  margin: 0 0.3125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.purple-player-img:hover,
+.big-purple-player-img:hover {
+  background-color: #796ea9;
+  cursor: pointer;
+}
+
+.player-img {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 18px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.big-purple-player-img {
+  width: 3.125rem;
+  height: 3.125rem;
+  border-radius: 25px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  background-color: #60558f;
+  margin: 0 0.3125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.middle .player-img:hover {
+  background-color: #60558f96;
+  cursor: pointer;
+}
+
+.player-img:hover {
+  cursor: pointer;
+  background-color: #5d39fd13;
+}
+
+.middle .inactive {
+  background-color: #cecece;
+}
+.middle .inactive:hover {
+  cursor: auto;
+}
+
+.middle img:hover {
+  cursor: pointer;
+}
+
+.chosen {
+  -webkit-box-shadow: 0px 0px 6px 5px #60558f;
+  box-shadow: 0px 0px 6px 5px #60558f;
+}
+
+.volume-menu .middle:hover {
+  -webkit-box-shadow: 0px 0px 6px 2px #60558f;
+  box-shadow: 0px 0px 6px 2px #60558f;
+  cursor: pointer;
+}
+
+.loved {
+  -webkit-box-shadow: 0px 0px 6px 2px red;
+  box-shadow: 0px 0px 6px 2px red;
+}
+
+#play {
+  padding-left: 0.1875rem;
+}
+
+#loading {
+  width: 2rem;
+  height: 2rem;
+}
+
+.middle h1 {
+  font-size: 1.125rem;
+  color: #60558f;
+  font-weight: 700;
+  font-family: "Rambla";
+  text-align: center;
+}
+
+.left-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 18px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  background-color: #cecece;
+}
+.left-img img {
+  width: 1rem;
+  height: 0.6875rem;
+}
+
+.playlist-display {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.playlist {
+  width: 22.5rem;
+  height: 30rem;
+  border-radius: 30px;
+  background-color: #f3f4f8;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5% 2%;
+}
+
+.top-part {
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.bottom-part {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 21rem;
+  padding: 0 1rem;
+}
+
+::-webkit-scrollbar {
+  width: 0.4375rem;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+.song {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #d3d5de;
+}
+
+.left-song,
+.right-song {
+  display: flex;
+  width: 50%;
+  align-items: center;
+}
+
+.left-song {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.right-song {
+  justify-content: flex-end;
+}
+
+.left,
+.middle,
+.right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 33%;
+  height: 100%;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+#share {
+  width: 0.875rem;
+  height: 0.75rem;
+  margin: 0 0.625rem;
+  border-radius: 4px;
+}
+
+#favorite {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.3125rem;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+#share,
+#favorite {
+  cursor: pointer;
+}
+
+.top-song {
+  height: 0.625rem;
+  margin-bottom: 0.3rem;
+  margin-top: 0.5rem;
+}
+.top-song h1 {
+  font-size: 0.75rem;
+  color: #78747f;
+  font-weight: 400;
+  font-family: "Rambla";
+}
+
+.bottom-song {
+  margin-bottom: 0.4rem;
+}
+.bottom-song h1 {
+  font-size: 1rem;
+  color: #2f1a4b;
+  font-weight: 400;
+  font-family: "Rambla";
+}
+
+a {
+  text-decoration: none;
+}
+
+.active {
+  background-color: #ffffff;
+}
+.active:hover {
+  cursor: pointer;
+}
+
+.loved {
+  -webkit-box-shadow: 0px 0px 6px 2px red;
+  box-shadow: 0px 0px 6px 2px red;
+}
+
+.popup-display {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 15;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+  width: 20rem;
+  height: 8rem;
+  padding: 1rem;
+  background: #f3f4f8;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+.popup button {
+  background-color: #60558f;
+  border-radius: 20%;
+  border: 1px solid black;
+  color: white;
+}
+.popup button:hover {
+  cursor: pointer;
+  background-color: #60558f96;
+  cursor: pointer;
+}
+
+.top-popup {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bottom-popup {
+  width: 100%;
+  height: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom-popup img {
+  width: 4rem;
+  height: 4em;
+  margin: 0 1rem;
+}
+.bottom-popup img:hover {
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=style.css.map */

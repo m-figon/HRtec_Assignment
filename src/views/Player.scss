@@ -1,0 +1,257 @@
+@import './main';
+.player-display {
+    @include widthHeight(100vw,100vh);
+    @include flex();
+}
+
+.player {
+    @include widthHeight(22.5rem,30rem);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.top-player {
+    @include widthHeight(100%,70%);
+    img {
+        @include widthHeight(100%,100%);
+        margin-top: -20%;
+    }
+}
+
+.bottom-player {
+    position: relative;
+    background-color: #eeeff5;
+    @include widthHeight(100%,30%);
+    z-index: 5;
+}
+
+.top-menu {
+    position: relative;
+    z-index: 3;
+    @include widthHeight(100%,20%);
+    background-color: rgba(0, 0, 0, 0.425);
+    display: flex;
+    padding: 0 3%;
+
+    .left,
+    .middle,
+    .right {
+        @include flex();
+        @include widthHeight(31%,100%);
+    }
+
+    .left {
+        justify-content: flex-start;
+    }
+
+    .right {
+        justify-content: flex-end;
+
+        img {
+            @include widthHeight(1rem,1rem);
+            margin: 0 0.625rem;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .middle {
+        img {
+            @include widthHeight(1rem,1rem);
+            margin: 0 0.625rem;
+            border-radius: 50%;
+            padding: 2px;
+        }
+    }
+}
+
+.bottom-menu {
+    position: relative;
+    z-index: 3;
+    @include widthHeight(100%,15%);
+    background-color: rgba(0, 0, 0, 0.425);
+    display: flex;
+    padding: 0 3%;
+    margin-top: -21%;
+
+    .left,
+    .middle,
+    .right {
+        @include flex();
+        @include widthHeight(33%,100%);
+        flex-direction: column;
+    }
+
+    .left {
+        justify-content: flex-start;
+    }
+
+    .right {
+        justify-content: flex-end;
+    }
+
+    .middle {
+        h1 {
+            font-size: 1.125rem;
+            color: #ffffff;
+            font-weight: 700;
+            font-family: $main-font;
+            text-align: center;
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 0.875rem;
+            color: #ffffff;
+            font-weight: 400;
+            font-family: $main-font;
+            text-align: center;
+            margin: 0;
+        }
+    }
+}
+
+
+
+
+
+.player-shade {
+    background-color: hsla(257, 33%, 38%, 0.384);
+    @include widthHeight(22.5rem,30rem);
+    border-radius: 30px;
+    margin-left: -22.5rem;
+}
+
+.volume-menu {
+    @include widthHeight(100%,0.4375rem);
+    position: relative;
+    z-index: 7;
+    display: flex;
+
+    .left {
+        background: white;
+        @include widthHeight(0%,100%);
+    }
+
+    .middle {
+        @include widthHeight(1.375rem,1.375rem);
+        border-radius: 11px;
+        filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+        background-color: #ffffff;
+        margin-top: -0.5rem;
+    }
+
+    .right {
+        @include widthHeight(100%,100%);
+        background-color: #ed5e74;
+    }
+
+    img {
+        @include widthHeight(0.75rem,0.5625rem);
+    }
+}
+
+
+
+.bottom-player {
+    display: flex;
+
+    .left,
+    .right,
+    .middle {
+        @include widthHeight(25%,100%);
+        @include flex();
+    }
+
+    .middle {
+        width: 50%;
+    }
+}
+
+
+
+.purple-player-img {
+    @include widthHeight(2.25rem,2.25rem);
+    border-radius: 18px;
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+    background-color: $main-color;
+    margin: 0 0.3125rem;
+    @include flex();
+}
+
+.purple-player-img,
+.big-purple-player-img{
+    &:hover {
+        background-color: lighten($main-color, 10%);
+        cursor: pointer;
+    }
+}
+
+.player-img {
+    @include widthHeight(2.25rem,2.25rem);
+
+    border-radius: 18px;
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+    background-color: #ffffff;
+    @include flex();
+}
+
+.big-purple-player-img {
+    @include widthHeight(3.125rem,3.125rem);
+    border-radius: 25px;
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+    background-color:  $main-color;
+    margin: 0 0.3125rem;
+    @include flex();
+}
+
+.middle{
+    .player-img{
+        &:hover {
+            background-color: #60558f96;
+            cursor: pointer;
+        }
+    }
+}
+
+
+
+.player-img:hover {
+    cursor: pointer;
+    background-color: #5d39fd13;
+}
+
+.middle .inactive {
+    background-color: #cecece;
+    &:hover {
+        cursor: auto;
+    }
+}
+
+
+.middle img:hover {
+    cursor: pointer;
+}
+
+.chosen {
+    -webkit-box-shadow: 0px 0px 6px 5px $main-color;
+    box-shadow: 0px 0px 6px 5px $main-color;
+}
+
+.volume-menu .middle:hover {
+    -webkit-box-shadow: 0px 0px 6px 2px $main-color;
+    box-shadow: 0px 0px 6px 2px $main-color;
+    cursor: pointer;
+}
+
+.loved {
+    -webkit-box-shadow: 0px 0px 6px 2px red;
+    box-shadow: 0px 0px 6px 2px red;
+}
+
+#play {
+    padding-left: 0.1875rem;
+}
