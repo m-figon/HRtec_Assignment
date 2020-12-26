@@ -60,15 +60,8 @@
             />
           </div>
           <div class="big-purple-player-img" v-on:click.capture="playPause()">
-            <img
-              v-if="played"
-              src="../imgs/pause.png"
-            />
-            <img
-              v-if="!played"
-              src="../imgs/play.png"
-              id="play"
-            />
+            <img v-if="played" src="../imgs/pause.png" />
+            <img v-if="!played" src="../imgs/play.png" id="play" />
           </div>
           <div
             class="purple-player-img"
@@ -102,6 +95,7 @@
 </template>
 
 <script>
+
 import store from "../store";
 import Popup from "../components/Share.vue";
 
@@ -137,11 +131,10 @@ export default {
                 this.seconds = 0;
                 this.song = singleSong;
                 this.loaded = true;
-                this.seconds +=
+                this.seconds += //time of particular song in seconds
                   parseInt(this.song.duration.substr(0, 1)) * 60 +
                   parseInt(this.song.duration.substr(2, 2));
-                console.log("songs seconds: " + this.seconds);
-                this.timeInterval = setInterval(this.intervalCallback, 100);
+                this.timeInterval = setInterval(this.intervalCallback, 100); // !!accelerated 10 times to present player options in easier way!! (100 instead of 1000 ms)
               }
             }
           });
@@ -165,45 +158,44 @@ export default {
         (this.timeTic / this.seconds) * 100 + "%";
       this.$refs.progressRight.style.width =
         100 - (this.timeTic / this.seconds) * 100 + "%";
-      if (this.timeTic < this.seconds) {
+      if (this.timeTic < this.seconds) {      // if time havent ended
         return;
       }
-      // if time ended
+      //if time ended
       this.$refs.progressLeft.style.width = "0%";
       this.$refs.progressRight.style.width = "100%";
       this.played = true;
       this.timeTic = 0;
+      const playlistReapeatModeOn = this.song.id + 1 === this.songs.length && this.mode === 1;
+      const playlistReapeatModeOff = this.song.id + 1 === this.songs.length && this.mode === 0;
+      const randomModeOff =  this.song.id + 1 !== this.songs.length && this.mode !== 2;
+      const repeatModeOn = this.mode === 3;
+      const randomModeOn =  this.mode === 2;
 
-      const playlistReapeatModeOn = () =>
-        this.song.id + 1 === this.songs.length && this.mode === 1;
-      const playlistReapeatModeOff = () =>
-        this.song.id + 1 === this.songs.length && this.mode === 0;
-      const randomModeOff = () =>
-        this.song.id + 1 !== this.songs.length && this.mode !== 2;
-      const repeatModeOn = () => this.mode === 3;
-      const randomModeOn = () => this.mode === 2;
-
-      if (playlistReapeatModeOn()) {
+      if (playlistReapeatModeOn) {
         this.$router.push({
           path: this.songs[0].title,
         });
         clearInterval(this.timeInterval);
         this.refreshed = true;
         this.loaded = false;
-      } else if (playlistReapeatModeOff()) {
-        clearInterval(this.timeInterval);
+      } else if (playlistReapeatModeOff) {
         this.played = false;
         this.timeTic = 0;
-      } else if (repeatModeOn()) {
+      } else if (repeatModeOn) {
         this.timeTic = 0;
-      } else if (randomModeOff()) {
+      } else if (randomModeOff) {
         this.$router.push({
           path: this.songs[this.song.id + 1].title,
         });
         this.resetParams();
-      } else if (randomModeOn()) {
+      } else if (randomModeOn) {
+        let randomValue= this.song.id;
+        while(randomValue===this.song.id){ //to avoid same value as this.song.id
+          randomValue=this.randomInt(0, this.songs.length - 1);
+        }
         this.$router.push({
-          path: this.songs[this.randomInt(0, this.songs.length - 1)].title,
+          path: this.songs[randomValue].title,
         });
         this.resetParams();
       }

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+
 import store from "../store";
 import Popup from "../components/Share.vue";
 
