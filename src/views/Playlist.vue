@@ -9,8 +9,8 @@
     <div v-if="loaded" class="playlist">
       <div class="top-part">
         <div class="left">
-          <div class="left-img" v-bind:class="{ active: lastSong }">
-            <img src="../imgs/arrow1.png" v-on:click="goBack()" />
+          <div class="left-img" v-bind:class="{ active: lastSong }" v-on:click.capture="goBack()">
+            <img src="../imgs/arrow1.png"  />
           </div>
         </div>
         <div class="middle">

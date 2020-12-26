@@ -44,7 +44,7 @@
       </div>
       <div class="bottom-player">
         <div class="left">
-          <div class="player-img" v-on:click="popupChange(true)">
+          <div class="player-img" v-on:click.capture="popupChange(true)">
             <img src="../imgs/share.png" />
           </div>
         </div>
@@ -78,7 +78,7 @@
           <div
             class="player-img"
             v-bind:class="{ loved: song.heart }"
-            v-on:click="loveReaction(song.id)"
+            v-on:click.capture="loveReaction(song.id)"
           >
             <img src="../imgs/favorite.png" />
           </div>
