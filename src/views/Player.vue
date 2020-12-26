@@ -25,7 +25,7 @@
             <img src="../imgs/menu.png" v-on:click="goToPlaylist()" />
           </div>
         </div>
-        <img src="../imgs/Icona_Pop.png" />
+        <img v-bind:src="song.img" />
       </div>
       <div class="bottom-menu">
         <div class="left"></div>
@@ -52,34 +52,32 @@
           <div
             class="purple-player-img"
             v-bind:class="{ inactive: song.id === 0 }"
+            v-on:click.capture="changeSong('-')"
           >
             <img
               v-bind:class="{ inactive: song.id === 0 }"
               src="../imgs/previous.png"
-              v-on:click="changeSong('-')"
             />
           </div>
-          <div class="big-purple-player-img">
+          <div class="big-purple-player-img" v-on:click.capture="playPause()">
             <img
               v-if="played"
               src="../imgs/pause.png"
-              v-on:click="playPause()"
             />
             <img
               v-if="!played"
               src="../imgs/play.png"
               id="play"
-              v-on:click="playPause()"
             />
           </div>
           <div
             class="purple-player-img"
             v-bind:class="{ inactive: song.id + 1 === songs.length }"
+            v-on:click.capture="changeSong('+')"
           >
             <img
               v-bind:class="{ inactive: song.id + 1 === songs.length }"
               src="../imgs/next.png"
-              v-on:click="changeSong('+')"
             />
           </div>
         </div>
@@ -157,14 +155,16 @@ export default {
       this.refreshed = true;
       this.loaded = false;
     },
-    intervalCallback(){
+    intervalCallback() {
       if (!this.played) {
         return;
       }
       //if play button pressed
       this.timeTic += 1;
-      this.$refs.progressLeft.style.width = (this.timeTic / this.seconds) * 100 + "%";
-      this.$refs.progressRight.style.width = 100 - (this.timeTic / this.seconds) * 100 + "%";
+      this.$refs.progressLeft.style.width =
+        (this.timeTic / this.seconds) * 100 + "%";
+      this.$refs.progressRight.style.width =
+        100 - (this.timeTic / this.seconds) * 100 + "%";
       if (this.timeTic < this.seconds) {
         return;
       }
@@ -174,9 +174,12 @@ export default {
       this.played = true;
       this.timeTic = 0;
 
-      const playlistReapeatModeOn = ()  => this.song.id + 1 === this.songs.length && this.mode === 1;
-      const playlistReapeatModeOff = ()  => this.song.id + 1 === this.songs.length && this.mode === 0;
-      const randomModeOff = () => this.song.id + 1 !== this.songs.length && this.mode !== 2;
+      const playlistReapeatModeOn = () =>
+        this.song.id + 1 === this.songs.length && this.mode === 1;
+      const playlistReapeatModeOff = () =>
+        this.song.id + 1 === this.songs.length && this.mode === 0;
+      const randomModeOff = () =>
+        this.song.id + 1 !== this.songs.length && this.mode !== 2;
       const repeatModeOn = () => this.mode === 3;
       const randomModeOn = () => this.mode === 2;
 
@@ -208,9 +211,9 @@ export default {
     changeSong(arg) {
       if (arg === "-" && this.song.id > 0) {
         //previous song
-      this.$router.push({ path: this.songs[this.song.id - 1].title });
-      this.resetParams();      
-      }else if (arg === "+" && this.song.id + 1 < this.songs.length) {
+        this.$router.push({ path: this.songs[this.song.id - 1].title });
+        this.resetParams();
+      } else if (arg === "+" && this.song.id + 1 < this.songs.length) {
         //next song
         this.$router.push({ path: this.songs[this.song.id + 1].title });
         this.resetParams();
@@ -232,7 +235,7 @@ export default {
       }
     },
     loveReaction(num) {
-      for(const song of this.songs){
+      for (const song of this.songs) {
         if (song.id === num) {
           song.heart = !song.heart;
           break;
@@ -251,7 +254,6 @@ export default {
 };
 </script>
 <style src="./style.css">
-
 </style>
 
 

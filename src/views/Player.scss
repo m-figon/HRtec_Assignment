@@ -1,11 +1,12 @@
 @import './main';
+
 .player-display {
-    @include widthHeight(100vw,100vh);
+    @include widthHeight(100vw, 100vh);
     @include flex();
 }
 
 .player {
-    @include widthHeight(22.5rem,30rem);
+    @include widthHeight(22.5rem, 30rem);
     border-radius: 30px;
     display: flex;
     flex-direction: column;
@@ -13,9 +14,10 @@
 }
 
 .top-player {
-    @include widthHeight(100%,70%);
+    @include widthHeight(100%, 70%);
+
     img {
-        @include widthHeight(100%,100%);
+        @include widthHeight(100%, 100%);
         margin-top: -20%;
     }
 }
@@ -23,14 +25,14 @@
 .bottom-player {
     position: relative;
     background-color: #eeeff5;
-    @include widthHeight(100%,30%);
+    @include widthHeight(100%, 30%);
     z-index: 5;
 }
 
 .top-menu {
     position: relative;
     z-index: 3;
-    @include widthHeight(100%,20%);
+    @include widthHeight(100%, 20%);
     background-color: rgba(0, 0, 0, 0.425);
     display: flex;
     padding: 0 3%;
@@ -39,7 +41,7 @@
     .middle,
     .right {
         @include flex();
-        @include widthHeight(31%,100%);
+        @include widthHeight(31%, 100%);
     }
 
     .left {
@@ -50,8 +52,9 @@
         justify-content: flex-end;
 
         img {
-            @include widthHeight(1rem,1rem);
+            @include widthHeight(1rem, 1rem);
             margin: 0 0.625rem;
+
             &:hover {
                 cursor: pointer;
             }
@@ -60,7 +63,7 @@
 
     .middle {
         img {
-            @include widthHeight(1rem,1rem);
+            @include widthHeight(1rem, 1rem);
             margin: 0 0.625rem;
             border-radius: 50%;
             padding: 2px;
@@ -71,7 +74,7 @@
 .bottom-menu {
     position: relative;
     z-index: 3;
-    @include widthHeight(100%,15%);
+    @include widthHeight(100%, 15%);
     background-color: rgba(0, 0, 0, 0.425);
     display: flex;
     padding: 0 3%;
@@ -81,7 +84,7 @@
     .middle,
     .right {
         @include flex();
-        @include widthHeight(33%,100%);
+        @include widthHeight(33%, 100%);
         flex-direction: column;
     }
 
@@ -120,37 +123,37 @@
 
 .player-shade {
     background-color: hsla(257, 33%, 38%, 0.384);
-    @include widthHeight(22.5rem,30rem);
+    @include widthHeight(22.5rem, 30rem);
     border-radius: 30px;
     margin-left: -22.5rem;
 }
 
 .volume-menu {
-    @include widthHeight(100%,0.4375rem);
+    @include widthHeight(100%, 0.4375rem);
     position: relative;
     z-index: 7;
     display: flex;
 
     .left {
         background: white;
-        @include widthHeight(0%,100%);
+        @include widthHeight(0%, 100%);
     }
 
     .middle {
-        @include widthHeight(1.375rem,1.375rem);
-        border-radius: 11px;
+        @include widthHeight(1.375rem, 1.375rem);
+        border-radius: 50%;
         filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
         background-color: #ffffff;
         margin-top: -0.5rem;
     }
 
     .right {
-        @include widthHeight(100%,100%);
+        @include widthHeight(100%, 100%);
         background-color: #ed5e74;
     }
 
     img {
-        @include widthHeight(0.75rem,0.5625rem);
+        @include widthHeight(0.75rem, 0.5625rem);
     }
 }
 
@@ -162,7 +165,7 @@
     .left,
     .right,
     .middle {
-        @include widthHeight(25%,100%);
+        @include widthHeight(25%, 100%);
         @include flex();
     }
 
@@ -174,8 +177,8 @@
 
 
 .purple-player-img {
-    @include widthHeight(2.25rem,2.25rem);
-    border-radius: 18px;
+    @include widthHeight(2.25rem, 2.25rem);
+    border-radius: 50%;
     filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
     background-color: $main-color;
     margin: 0 0.3125rem;
@@ -183,7 +186,7 @@
 }
 
 .purple-player-img,
-.big-purple-player-img{
+.big-purple-player-img {
     &:hover {
         background-color: lighten($main-color, 10%);
         cursor: pointer;
@@ -191,27 +194,27 @@
 }
 
 .player-img {
-    @include widthHeight(2.25rem,2.25rem);
+    @include widthHeight(2.25rem, 2.25rem);
 
-    border-radius: 18px;
+    border-radius: 50%;
     filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
     background-color: #ffffff;
     @include flex();
 }
 
 .big-purple-player-img {
-    @include widthHeight(3.125rem,3.125rem);
-    border-radius: 25px;
+    @include widthHeight(3.125rem, 3.125rem);
+    border-radius: 50%;
     filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
-    background-color:  $main-color;
+    background-color: $main-color;
     margin: 0 0.3125rem;
     @include flex();
 }
 
-.middle{
-    .player-img{
+.middle {
+    .player-img {
         &:hover {
-            background-color: #60558f96;
+            background-color: lighten($main-color, 10%);
             cursor: pointer;
         }
     }
@@ -226,6 +229,7 @@
 
 .middle .inactive {
     background-color: #cecece;
+
     &:hover {
         cursor: auto;
     }
@@ -254,4 +258,60 @@
 
 #play {
     padding-left: 0.1875rem;
+}
+
+@media only screen and (min-width: 1100px) {
+    .player {
+        @include widthHeight(30rem, 40rem);
+    }
+    .top-menu{
+        .middle,
+        .right{
+            img{
+                @include widthHeight(1.33rem, 1.33rem);
+
+            }
+        }
+    }
+    .bottom-menu {
+        .middle {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.17rem;
+            }
+        }
+    }
+
+    .player-shade {
+        @include widthHeight(30rem, 40rem);
+        margin-left: -30rem;
+    }
+
+    .volume-menu {
+        @include widthHeight(100%, 0.58rem);
+
+        .middle {
+            @include widthHeight(1.83rem, 1.83rem);
+            margin-top: -0.67rem;
+        }
+    }
+
+    .purple-player-img {
+        @include widthHeight(3rem, 3rem);
+    }
+
+    .player-img {
+        @include widthHeight(3rem, 3rem);
+    }
+
+    .big-purple-player-img {
+        @include widthHeight(4.17rem, 4.17rem);
+    }
+
+    #play {
+        padding-left: 0.25rem;
+    }
 }

@@ -1,135 +1,218 @@
 @import './main';
 
 #loading {
-    @include widthHeight(2rem,2rem);
-  }
-  .middle{
-    h1 {
-        font-size: 1.125rem;
-        color: $main-color;
-        font-weight: 700;
-        font-family: $main-font;
-        text-align: center;
-      }
-  }
-  .left-img {
-    @include flex();
-    @include widthHeight(2.25rem,2.25rem);
-    border-radius: 18px;
-    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
-    background-color: #cecece;
-    img {
-        @include widthHeight(1rem,0.6875rem);
-      }
-  }
-  .playlist-display {
-    @include widthHeight(100vw,100vh);
+  @include widthHeight(2rem, 2rem);
+}
 
-    @include flex();
+.middle {
+  h1 {
+    font-size: 1.125rem;
+    color: $main-color;
+    font-weight: 700;
+    font-family: $main-font;
+    text-align: center;
+  }
+}
+
+.left-img {
+  @include flex();
+  @include widthHeight(2.25rem, 2.25rem);
+  border-radius: 50%;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  background-color: #cecece;
+
+  img {
+    @include widthHeight(1rem, 0.6875rem);
+  }
+}
+
+.playlist-display {
+  @include widthHeight(100vw, 100vh);
+
+  @include flex();
+}
+
+.playlist {
+  @include widthHeight(22.5rem, 30rem);
+  border-radius: 30px;
+  background-color: #f3f4f8;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5% 2%;
+}
+
+.top-part {
+  height: 5rem;
+  @include flex();
+}
+
+.bottom-part {
+  @include flex(flex, flex-start, center, column);
+  overflow-y: scroll;
+  height: 21rem;
+  padding: 0 1rem;
+}
+
+::-webkit-scrollbar {
+  width: 0.4375rem;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 3px;
+
+  &:hover {
+    background: #888;
+  }
+}
+
+.song {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #d3d5de;
+}
+
+.left-song,
+.right-song {
+  display: flex;
+  width: 50%;
+  align-items: center;
+}
+
+.left-song {
+  @include flex(flex, flex-start, flex-start, column);
+}
+
+.right-song {
+  justify-content: flex-end;
+}
+
+.left,
+.middle,
+.right {
+  @include flex();
+  @include widthHeight(33%, 100%);
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+#share {
+  @include widthHeight(0.875rem, 0.75rem);
+  margin: 0 0.625rem;
+  border-radius: 4px;
+}
+
+#favorite {
+  @include widthHeight(0.9rem, 0.75rem);
+  margin-right: 0.3125rem;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+#share,
+#favorite {
+  cursor: pointer;
+}
+
+.top-song {
+  height: 0.625rem;
+  margin-bottom: 0.3rem;
+  margin-top: 0.5rem;
+
+  h1 {
+    font-size: 0.75rem;
+    color: #78747f;
+    font-weight: 400;
+    font-family: $main-font;
+  }
+}
+
+.bottom-song {
+  margin-bottom: 0.4rem;
+
+  h1 {
+    font-size: 1rem;
+    color: #2f1a4b;
+    font-weight: 400;
+    font-family: $main-font;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.active {
+  background-color: #ffffff;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.loved {
+  -webkit-box-shadow: 0px 0px 6px 2px red;
+  box-shadow: 0px 0px 6px 2px red;
+}
+
+@media only screen and (min-width: 1100px) {
+
+  .middle {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .left-img {
+    @include widthHeight(3rem, 3rem);
+    img {
+      @include widthHeight(1.33rem, 0.917rem);
+    }
   }
   .playlist {
-    @include widthHeight(22.5rem,30rem);
-    border-radius: 30px;
-    background-color: #f3f4f8;
-    display: flex;
-    flex-direction: column;
-    padding: 0.5% 2%;
+    @include widthHeight(30rem, 40rem);
   }
+
   .top-part {
-    height: 5rem;
+    height: 6.67rem;
     @include flex();
   }
   .bottom-part {
-    @include flex(flex,flex-start,center,column);
-    overflow-y: scroll;
-    height: 21rem;
-    padding: 0 1rem;
-  }
-  ::-webkit-scrollbar {
-    width: 0.4375rem;
-    border-radius: 3px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #d1d1d1;
-    border-radius: 3px;
-    &:hover {
-        background: #888;
-      }
-  }
-  .song {
-    display: flex;
-    width: 100%;
-    border-bottom: 1px solid #d3d5de;
-  }
-  .left-song,
-  .right-song {
-    display: flex;
-    width: 50%;
-    align-items: center;
-  }
-  .left-song {
-    @include flex(flex,flex-start,flex-start,column);
-  }
-  .right-song {
-    justify-content: flex-end;
-  }
-  .left,
-  .middle,
-  .right {
-    @include flex();
-    @include widthHeight(33%,100%);
-  }
-  .left {
-    justify-content: flex-start;
+    height: 28rem;
+    padding: 0 1.33rem;
   }
   #share {
-    @include widthHeight(0.875rem,0.75rem);
+    @include widthHeight(1.167rem, 1rem);
     margin: 0 0.625rem;
     border-radius: 4px;
   }
+
   #favorite {
-    @include widthHeight(0.75rem,0.75rem);
-    margin-right: 0.3125rem;
-    border-radius: 50%;
-    padding: 2px;
-  }
-  #share,
-  #favorite {
-    cursor: pointer;
+    @include widthHeight(1.1rem, 1rem);
+    margin-right: 0.417rem;
   }
   .top-song {
-    height: 0.625rem;
-    margin-bottom: 0.3rem;
-    margin-top: 0.5rem;
-    h1 {
-        font-size: 0.75rem;
-        color: #78747f;
-        font-weight: 400;
-        font-family: $main-font;
-      }
-  }
-  .bottom-song {
+    height: 0.833rem;
     margin-bottom: 0.4rem;
+    margin-top: 0.67rem;
+
     h1 {
-        font-size: 1rem;
-        color: #2f1a4b;
-        font-weight: 400;
-        font-family: $main-font;
-      }
+      font-size: 1rem;
+    }
   }
-  a {
-    text-decoration: none;
+
+  .bottom-song {
+    margin-bottom: 0.53rem;
+
+    h1 {
+      font-size: 1.33rem;
+    }
   }
-  .active {
-    background-color: #ffffff;
-    &:hover {
-        cursor: pointer;
-      }
-  }
-  .loved {
-    -webkit-box-shadow: 0px 0px 6px 2px red;
-    box-shadow: 0px 0px 6px 2px red;
-  }
+}

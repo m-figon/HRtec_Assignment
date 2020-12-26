@@ -1,24 +1,19 @@
-# hrtec_assignment
+# HRtec Assignment
 
-## Project setup
-```
-npm install
-```
+Goal of this project was creating a music playing widget. Player time counting is accelerated ten times to present options located in top part of the player (playlist loop, random song, song loop) in a easier way.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Used frameworks, languages, libraries
 
-### Compiles and minifies for production
-```
-npm run build
-```
+* Vue
 
-### Lints and fixes files
-```
-npm run lint
-```
+* JavaScript
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* HTML & CSS
+
+* Sass
+
+## Netlify app link
+
+hrtec-assignment-mfigon.netlify.app
+
+
